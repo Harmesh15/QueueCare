@@ -1,0 +1,26 @@
+$kind: http-request
+name: http://localhost:3000/api/doctors
+description: create doctor
+url: http://localhost:3000/api/doctors
+method: POST
+headers:
+  Authorization: "{{bearer_token_168y}}"
+  Content-Type: application/json
+body:
+  type: json
+  content: "\r
+
+    {\r
+
+    \  \"userId\": \"6ac866dbca099dca0e998ac3\",\r
+
+    \  \"clinicId\": \"6ac86600ca099dca0e998ac2\",\r
+
+    \  \"specialization\": \"Cardiology\",\r
+
+    \  \"consultationDuration\": 15\r
+
+    }\r
+
+    \  "
+order: 1000
