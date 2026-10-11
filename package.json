@@ -12,11 +12,18 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "axios": "^1.20.0",
     "bcryptjs": "^3.0.3",
+    "bullmq": "^6.3.12",
     "dotenv": "^18.0.6",
     "express": "^5.2.1",
+    "ioredis": "^6.0.0",
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.7.0",
-    "mongoose": "^9.11.1"
+    "mongoose": "^9.11.1",
+    "nodemailer": "^10.1.0",
+    "redis": "^6.3.0",
+    "socket.io": "^4.8.4",
+    "socket.io-client": "^4.8.4"
   }
 }

@@ -56,4 +56,28 @@ const appointmentSchema = new mongoose.Schema({
 
 }, { timestamps: true });
 
-module.exports = mongoose.model('Appointment', appointmentSchema);
+appointmentSchema.index(
+    {
+        doctorId: 1,
+        appointmentDate: 1,
+        appointmentTime: 1
+    },
+    {
+        unique: true,
+        partialFilterExpression: {
+            status: {
+                $in: ['booked', 'waiting', 'called']
+            }
+        }
+    }
+);
+
+
+
+// module.exports = mongoose.model('Appointment', appointmentSchema);
+module.exports =
+    mongoose.models.Appointment ||
+    mongoose.model('Appointment', appointmentSchema);
+
+// mongoose.models.Appointment, ye existing compiled model m change karne par bhi dobara compile kar deta hai, 
+// eske bina change ni kar payenge  ye Cannot overwrite `Appointment` model once compiled. ayega

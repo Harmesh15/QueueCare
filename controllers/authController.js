@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const redisClient = require('../config/redis');
 
 
 exports.register = async (req,res,next)=>{
@@ -48,6 +49,8 @@ exports.register = async (req,res,next)=>{
 
 
 
+
+
 /// User login
 
 exports.login = async (req,res,next)=>{
@@ -63,6 +66,13 @@ exports.login = async (req,res,next)=>{
         const user = await User.findOne({email});
 
         if (!user) {
+
+            const attempts = await redisClient.incr(req.loginRateLimitKey);
+
+              if (attempts === 1) {
+               await redisClient.expire(req.loginRateLimitKey, 60);
+             }
+
             return res.status(401).json({
                 message: 'Invalid email or password'
             });
@@ -72,6 +82,14 @@ exports.login = async (req,res,next)=>{
     const isPassMatched = await bcrypt.compare(password,user.password);
 
         if (!isPassMatched) {
+
+            const attempts = await redisClient.incr(req.loginRateLimitKey);
+            console.log('Failed login count:', attempts);
+
+            if (attempts === 1) {
+                await redisClient.expire(req.loginRateLimitKey, 60);
+            }
+
             return res.status(401).json({
                 message: 'Invalid email or password'
             });
@@ -88,6 +106,8 @@ exports.login = async (req,res,next)=>{
             { expiresIn: '1h' }
         );
 
+        // Reset failed login attempts after successful login
+           await redisClient.del(req.loginRateLimitKey);
 
          res.status(200).json({
             message: 'Login successful',
