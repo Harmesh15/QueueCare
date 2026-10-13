@@ -1,0 +1,441 @@
+:root {
+    --primary: #7c5cff;
+    --primary-dark: #6346e8;
+    --light-purple: #eee9ff;
+    --text: #f5f5ff;
+    --muted: #a5abc5;
+    --border: rgba(255, 255, 255, 0.12);
+    --background: #0b1020;
+    --card: rgba(20, 27, 51, 0.78);
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--text);
+    background: var(--background);
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Background */
+
+.background {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(94, 67, 211, 0.13),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(33, 105, 204, 0.13),
+            transparent 35%
+        );
+}
+
+.blob {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.4;
+    animation: float 12s ease-in-out infinite alternate;
+}
+
+.blob-one {
+    top: -130px;
+    left: -100px;
+    background: #7147ff;
+}
+
+.blob-two {
+    right: -120px;
+    top: 25%;
+    background: #244bc4;
+    animation-delay: 2s;
+}
+
+.blob-three {
+    bottom: -180px;
+    left: 35%;
+    background: #7136b9;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    from {
+        transform: translate(0, 0);
+    }
+
+    to {
+        transform: translate(45px, 35px);
+    }
+}
+
+/* Navbar */
+
+.navbar {
+    width: 100%;
+    min-height: 85px;
+    padding: 20px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: 750;
+    letter-spacing: -0.5px;
+}
+
+.brand-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    color: var(--white);
+    background: linear-gradient(135deg, #9777ff, #6546e8);
+    box-shadow: 0 5px 25px rgba(124, 92, 255, 0.35);
+}
+
+.nav-text {
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.nav-text a,
+.login-text a {
+    color: #b7a5ff;
+    text-decoration: none;
+    font-weight: 650;
+}
+
+.nav-text a:hover,
+.login-text a:hover {
+    color: var(--white);
+    text-decoration: underline;
+}
+
+/* Main container */
+
+.register-container {
+    width: 100%;
+    min-height: calc(100vh - 85px);
+    padding: 25px 20px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Registration card */
+
+.register-card {
+    width: 100%;
+    max-width: 465px;
+    padding: 38px 36px;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: var(--card);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    animation: appear 0.7s ease both;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-icon {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    margin-bottom: 23px;
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--white);
+    background: linear-gradient(135deg, #9577ff, #6546e8);
+    box-shadow: 0 8px 25px rgba(124, 92, 255, 0.25);
+}
+
+.register-card h1 {
+    font-size: 29px;
+    line-height: 1.3;
+    letter-spacing: -0.7px;
+    margin-bottom: 9px;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+
+/* Form */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 13px;
+    font-weight: 650;
+    color: #e5e6f4;
+}
+
+.form-group input {
+    width: 100%;
+    height: 49px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    outline: none;
+    background: rgba(8, 13, 29, 0.6);
+    color: var(--white);
+    font-family: inherit;
+    font-size: 14px;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: #737c9c;
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+    background: rgba(8, 13, 29, 0.85);
+    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.14);
+}
+
+.field-hint {
+    display: block;
+    margin-top: 7px;
+    color: #929bb8;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* Fixed Patient role */
+
+.role-wrapper {
+    display: flex;
+    align-items: center;
+    height: 49px;
+    padding: 0 13px;
+    gap: 10px;
+    border: 1px solid rgba(124, 92, 255, 0.3);
+    border-radius: 11px;
+    background: rgba(124, 92, 255, 0.09);
+}
+
+.role-icon {
+    color: #b7a5ff;
+    font-size: 20px;
+}
+
+.role-wrapper input {
+    flex: 1;
+    width: auto;
+    height: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #d9d0ff;
+    font-weight: 650;
+    cursor: default;
+    box-shadow: none;
+}
+
+.role-wrapper input:focus {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.lock-icon {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* Submit button */
+
+.register-button {
+    width: 100%;
+    height: 51px;
+    margin-top: 5px;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #8968ff, #6847ed);
+    color: var(--white);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 9px 25px rgba(105, 71, 237, 0.25);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+.register-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 13px 30px rgba(105, 71, 237, 0.38);
+    filter: brightness(1.08);
+}
+
+.register-button:active {
+    transform: translateY(0);
+}
+
+.register-button:focus-visible {
+    outline: 3px solid #c7baff;
+    outline-offset: 3px;
+}
+
+/* Divider and login */
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin: 27px 0 20px;
+    color: #7f89a7;
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: var(--border);
+}
+
+.login-text {
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* Footer */
+
+.footer-text {
+    margin-top: 23px;
+    text-align: center;
+    color: #858da8;
+    font-size: 12px;
+}
+
+/* Responsive */
+
+@media (max-width: 520px) {
+    .navbar {
+        min-height: 75px;
+        padding: 17px 5%;
+    }
+
+    .brand {
+        font-size: 21px;
+    }
+
+    .brand-icon {
+        width: 34px;
+        height: 34px;
+    }
+
+    .nav-text {
+        font-size: 12px;
+    }
+
+    .register-container {
+        min-height: calc(100vh - 75px);
+        padding: 15px 16px 25px;
+    }
+
+    .register-card {
+        padding: 29px 22px;
+        border-radius: 20px;
+    }
+
+    .register-card h1 {
+        font-size: 25px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+        margin-bottom: 24px;
+    }
+}
+
+@media (max-width: 360px) {
+    .navbar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .register-card {
+        padding: 25px 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

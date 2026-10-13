@@ -41,11 +41,13 @@ exports.register = async (req,res,next)=>{
                 role: user.role
             }
         });
-    }catch(err){
-        next(err);
-        return res.status(500).json({message:"User not created",error: err.message})
-    }
+   } catch (err) {
+    next(err);
 }
+}
+
+
+
 
 
 

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | QueueCare</title>
+
+    <link rel="stylesheet" href="./login/login.css">
+    <script src="./login.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Background effects -->
+    <div class="background">
+        <div class="blob blob-one"></div>
+        <div class="blob blob-two"></div>
+        <div class="blob blob-three"></div>
+    </div>
+
+    <!-- Navbar -->
+    <header class="navbar">
+
+        <a href="/" class="brand">
+            <span class="brand-icon">✚</span>
+            <span>QueueCare</span>
+        </a>
+
+        <p class="nav-text">
+            New to QueueCare?
+            <a href="./register.html">Create account</a>
+        </p>
+
+    </header>
+
+    <!-- Login section -->
+    <main class="login-container">
+
+        <section class="login-card">
+
+            <div class="card-icon">✚</div>
+
+            <h1>Welcome back!</h1>
+
+            <p class="subtitle">
+                Sign in to manage your healthcare appointments.
+            </p>
+
+            <form id="loginForm">
+
+                <!-- Email -->
+                <div class="form-group">
+
+                    <label for="email">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+
+                    <div class="password-label">
+                        <label for="password">Password</label>
+                    </div>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+                <!-- Forgot password -->
+                <div class="forgot-password">
+                    <a href="/forgot-password.html">
+                        Forgot password?
+                    </a>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="login-button">
+                    Sign In
+                    <span aria-hidden="true">→</span>
+                </button>
+
+            </form>
+
+            <div class="divider">
+                <span>YOUR HEALTH, OUR PRIORITY</span>
+            </div>
+
+            <p class="register-text">
+                Don't have an account?
+                <a href="./register.html">Create an account</a>
+            </p>
+
+        </section>
+
+        <p class="footer-text">
+            © <span id="currentYear"></span> QueueCare.
+            Making healthcare simpler.
+        </p>
+
+    </main>
+
+</body>
+</html>

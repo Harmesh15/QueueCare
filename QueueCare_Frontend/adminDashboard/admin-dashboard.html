@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | QueueCare</title>
+
+    <link rel="stylesheet" href="./admin-dashboard.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="/" class="brand">
+            <span class="brand-icon">✚</span>
+            <span>QueueCare</span>
+        </a>
+
+        <div class="nav-right">
+            <div class="admin-info">
+                <div class="admin-avatar">A</div>
+                <div class="admin-details">
+                    <strong id="adminName">Administrator</strong>
+                    <span>Admin Panel</span>
+                </div>
+            </div>
+
+            <button type="button" class="logout-btn" id="logoutButton">
+                Logout ↗
+            </button>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+
+        <section class="welcome-section">
+            <div class="welcome-badge">
+                <span class="live-dot"></span>
+                ADMINISTRATION PANEL
+            </div>
+
+            <h1>Welcome to <span>QueueCare.</span></h1>
+
+            <p>
+                Manage your clinics, doctors, availability and appointments
+                from one simple dashboard.
+            </p>
+        </section>
+
+        <section class="management-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Management Center</h2>
+                    <p>Choose what you want to manage today.</p>
+                </div>
+
+                <span class="section-count">04 MODULES</span>
+            </div>
+
+            <div class="management-grid">
+
+                <!-- Manage Doctors -->
+                <a href="/adminDashboard/manage-doctors.html"
+                   class="management-card">
+
+                    <div class="card-image">
+                        <img
+                            src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=900&q=85"
+                            alt="Doctor in a medical coat"
+                            loading="lazy"
+                        >
+                        <span class="card-number">01</span>
+                        <span class="image-overlay"></span>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="card-icon purple-icon">⚕</div>
+
+                        <h3>Manage Doctors</h3>
+
+                        <p>
+                            Add new doctors, view their profiles, update
+                            specializations and manage clinic assignments.
+                        </p>
+
+                        <div class="card-footer">
+                            <span>Doctor Management</span>
+                            <span class="card-arrow">↗</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Manage Clinics -->
+                <a href="/adminDashboard/manage-clinics.html"
+                   class="management-card">
+
+                    <div class="card-image">
+                        <img
+                            src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=900&q=85"
+                            alt="Modern clinic interior"
+                            loading="lazy"
+                        >
+                        <span class="card-number">02</span>
+                        <span class="image-overlay"></span>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="card-icon blue-icon">✚</div>
+
+                        <h3>Manage Clinics</h3>
+
+                        <p>
+                            Create clinics, update addresses and contact
+                            information, and manage clinic operating hours.
+                        </p>
+
+                        <div class="card-footer">
+                            <span>Clinic Management</span>
+                            <span class="card-arrow">↗</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Manage Availability -->
+                <a href="/adminDashboard/manage-availability.html"
+                   class="management-card">
+
+                    <div class="card-image">
+                        <img
+                            src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=900&q=85"
+                            alt="Calendar and schedule planning"
+                            loading="lazy"
+                        >
+                        <span class="card-number">03</span>
+                        <span class="image-overlay"></span>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="card-icon green-icon">◷</div>
+
+                        <h3>Manage Availability</h3>
+
+                        <p>
+                            Set weekly working days, configure doctor
+                            timings and manage appointment availability.
+                        </p>
+
+                        <div class="card-footer">
+                            <span>Schedule Management</span>
+                            <span class="card-arrow">↗</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Manage Appointments -->
+                <a href="/adminDashboard/manage-appointments.html"
+                   class="management-card">
+
+                    <div class="card-image">
+                        <img
+                            src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=85"
+                            alt="Healthcare professional reviewing patient information"
+                            loading="lazy"
+                        >
+                        <span class="card-number">04</span>
+                        <span class="image-overlay"></span>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="card-icon orange-icon">▣</div>
+
+                        <h3>Manage Appointments</h3>
+
+                        <p>
+                            View patient bookings, check appointment
+                            details and monitor appointment statuses.
+                        </p>
+
+                        <div class="card-footer">
+                            <span>Appointment Management</span>
+                            <span class="card-arrow">↗</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <footer class="dashboard-footer">
+            <span>© <span id="currentYear"></span> QueueCare</span>
+            <span>Making healthcare management simpler.</span>
+        </footer>
+
+    </main>
+
+    <script>
+        // Display the logged-in admin's name
+        const savedUser = localStorage.getItem("user");
+
+        if (savedUser) {
+            try {
+                const user = JSON.parse(savedUser);
+
+                if (user.role !== "admin") {
+                    window.location.href = "/login.html";
+                } else {
+                    document.getElementById("adminName").textContent =
+                        user.name || "Administrator";
+                }
+            } catch (error) {
+                window.location.href = "/login.html";
+            }
+        } else {
+            window.location.href = "/login.html";
+        }
+
+        // Footer year
+        document.getElementById("currentYear").textContent =
+            new Date().getFullYear();
+
+        // Logout
+        document.getElementById("logoutButton").addEventListener(
+            "click",
+            () => {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "/login.html";
+            }
+        );
+    </script>
+
+</body>
+</html>
