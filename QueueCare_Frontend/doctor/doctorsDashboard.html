@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard | QueueCare</title>
+    <link rel="stylesheet" href="./doctorsDashboard.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="/" class="brand">
+            <span class="brand-icon">✚</span>
+            <span>QueueCare</span>
+        </a>
+
+        <div class="navbar-right">
+            <span class="doctor-label">Doctor Portal</span>
+            <button id="logoutBtn" class="logout-btn">Logout</button>
+        </div>
+    </header>
+
+    <main class="dashboard">
+
+        <section class="welcome-section">
+            <div>
+                <span class="eyebrow">DOCTOR WORKSPACE</span>
+                <h1>Doctor Dashboard</h1>
+                <p>Manage your appointments and keep your patient queue moving.</p>
+            </div>
+
+            <button id="callNextBtn" class="call-next-btn">
+                <span>▶</span> Call Next Patient
+            </button>
+        </section>
+
+        <section class="stats-grid">
+            <article class="stat-card">
+                <div class="stat-icon purple-icon">📋</div>
+                <p>Total Appointments</p>
+                <h2 id="totalCount">0</h2>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon orange-icon">⏳</div>
+                <p>Waiting</p>
+                <h2 id="waitingCount">0</h2>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon blue-icon">📢</div>
+                <p>Currently Called</p>
+                <h2 id="calledCount">0</h2>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon green-icon">✓</div>
+                <p>Completed</p>
+                <h2 id="completedCount">0</h2>
+            </article>
+        </section>
+
+        <section class="appointments-section">
+            <div class="section-heading">
+                <div>
+                    <h2>My Appointments</h2>
+                    <p>Appointments assigned to your doctor profile.</p>
+                </div>
+
+                <button id="refreshBtn" class="refresh-btn">
+                    ↻ Refresh
+                </button>
+            </div>
+
+            <div class="filter-row">
+                <input
+                    type="date"
+                    id="dateFilter"
+                    aria-label="Filter appointments by date"
+                >
+
+                <select id="statusFilter" aria-label="Filter by status">
+                    <option value="all">All statuses</option>
+                    <option value="booked">Booked</option>
+                    <option value="waiting">Waiting</option>
+                    <option value="called">Called</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="skipped">Skipped</option>
+                </select>
+            </div>
+
+            <div id="appointmentsContainer" class="appointments-grid"></div>
+
+            <p id="appointmentsMessage" class="message" role="status"></p>
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- <script src="../../sockets/queueSocket.js"></script> -->
+     <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="./doctorsDashboard.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QueueCare - Check Appointment Status</title>
+
+    <link rel="stylesheet" href="./check-status.css">
+
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="check-status.js" defer></script>
+</head>
+<body>
+
+    <header class="status-header">
+        <a href="./patient.html" class="back-link">
+            ← Dashboard
+        </a>
+        <h1>QueueCare</h1>
+    </header>
+
+    <main class="status-container">
+        <h2>Check Appointment Status</h2>
+        <p class="subtitle">
+            Track your appointment and live queue progress.
+        </p>
+
+        <div id="message" class="message">
+            Loading your appointments...
+        </div>
+
+        <section id="appointment-list" class="appointment-list"></section>
+
+        <section id="queue-details" class="queue-card" hidden>
+            <h3>Live Queue Status</h3>
+
+            <p>Your Token:
+                <strong id="token-number">--</strong>
+            </p>
+
+            <p>Appointment Status:
+                <strong id="appointment-status">--</strong>
+            </p>
+
+            <p>Currently Serving Token:
+                <strong id="serving-token">--</strong>
+            </p>
+
+            <p>Patients Ahead:
+                <strong id="patients-ahead">--</strong>
+            </p>
+
+            <p id="doctor-info"></p>
+            <p id="clinic-info"></p>
+        </section>
+    </main>
+
+</body>
+</html>

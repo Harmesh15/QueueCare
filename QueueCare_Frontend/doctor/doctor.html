@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./doctor.css">
+</head>
+<body>
+
+<section class="doctors-section">
+
+    <!-- Header -->
+    <div class="doctors-header">
+        <div>
+            <h2>Manage Doctors</h2>
+            <p>View and manage all clinic doctors</p>
+        </div>
+
+        <span class="doctors-count" id="doctorsCount">
+            0 Doctors
+        </span>
+    </div>
+
+    <!-- Dynamic Cards Container -->
+    <div class="doctors-grid" id="doctorsContainer">
+
+        <!-- Cards will be generated dynamically using JavaScript -->
+
+    </div>
+
+    <!-- Loading / Empty / Error Message -->
+    <p class="doctors-message" id="doctorsMessage"></p>
+
+
+<!-- Edit Doctor Modal -->
+<div class="edit-modal" id="editDoctorModal">
+
+    <div class="edit-modal-content">
+
+        <div class="edit-modal-header">
+            <div>
+                <h2>Edit Doctor</h2>
+                <p>Update doctor information</p>
+            </div>
+
+            <button
+                type="button"
+                class="close-modal-btn"
+                onclick="closeEditDoctorForm()"
+            >&times;</button>
+        </div>
+
+        <form id="editDoctorForm">
+
+            <!-- Clinic -->
+            <div class="edit-form-group">
+                <label for="editClinicId">Clinic</label>
+
+                <select id="editClinicId" name="clinicId" required>
+                    <option value="">Select Clinic</option>
+                </select>
+            </div>
+
+            <!-- Specialization -->
+            <div class="edit-form-group">
+                <label for="editSpecialization">Specialization</label>
+
+                <input
+                    type="text"
+                    id="editSpecialization"
+                    name="specialization"
+                    placeholder="e.g. Cardiology"
+                    required
+                >
+            </div>
+
+            <!-- Consultation Duration -->
+            <div class="edit-form-group">
+                <label for="editConsultationDuration">
+                    Consultation Duration (minutes)
+                </label>
+
+                <input
+                    type="number"
+                    id="editConsultationDuration"
+                    name="consultationDuration"
+                    min="1"
+                    placeholder="e.g. 15"
+                    required
+                >
+            </div>
+
+            <!-- Availability -->
+            <div class="edit-form-group">
+                <label for="editIsAvailable">Availability Status</label>
+
+                <select id="editIsAvailable" name="isAvailable" required>
+                    <option value="true">Available</option>
+                    <option value="false">Unavailable</option>
+                </select>
+            </div>
+
+            <p id="editDoctorMessage" class="edit-doctor-message"></p>
+
+            <div class="edit-form-actions">
+                <button
+                    type="button"
+                    class="cancel-edit-btn"
+                    onclick="closeEditDoctorForm()"
+                >
+                    Cancel
+                </button>
+
+                <button type="submit" class="save-doctor-btn" id="saveDoctorBtn">
+                    Save Changes
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./doctor.js"></script>
+
+</section>
+</body>
+</html>

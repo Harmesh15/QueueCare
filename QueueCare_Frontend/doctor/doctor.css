@@ -1,0 +1,376 @@
+s/* Main Section */
+.doctors-section {
+    padding: 30px;
+    background: #fafaff;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+/* Header */
+.doctors-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 28px;
+}
+
+.doctors-header h2 {
+    margin: 0 0 8px;
+    color: #20284b;
+    font-size: 26px;
+}
+
+.doctors-header p {
+    margin: 0;
+    color: #68718a;
+    font-size: 14px;
+}
+
+.doctors-count {
+    background: #f0edff;
+    color: #6d5ae6;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Responsive Cards Grid */
+.doctors-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    align-items: stretch;
+}
+
+/* Individual Doctor Card */
+.doctor-card {
+    background: #ffffff;
+    border: 1px solid #e4e5ef;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 4px 15px rgba(32, 40, 75, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.doctor-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(32, 40, 75, 0.10);
+}
+
+/* Doctor Profile */
+.doctor-profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.doctor-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #f0edff;
+    color: #6d5ae6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 23px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.doctor-profile-info {
+    min-width: 0;
+}
+
+.doctor-name {
+    margin: 0 0 7px;
+    color: #20284b;
+    font-size: 18px;
+    overflow-wrap: anywhere;
+}
+
+.doctor-specialization {
+    margin: 0;
+    color: #6d5ae6;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Availability Badge */
+.doctor-status {
+    display: inline-block;
+    width: fit-content;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.doctor-status.available {
+    background: #e7f8ee;
+    color: #16834a;
+}
+
+.doctor-status.unavailable {
+    background: #fff0f0;
+    color: #d43d3d;
+}
+
+/* Doctor Details */
+.doctor-details {
+    border-top: 1px solid #eeeef5;
+    padding-top: 17px;
+    flex: 1;
+}
+
+.doctor-detail {
+    margin-bottom: 16px;
+}
+
+.doctor-detail:last-child {
+    margin-bottom: 0;
+}
+
+.doctor-detail label {
+    display: block;
+    color: #8990a5;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.doctor-detail p {
+    margin: 0;
+    color: #20284b;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* Buttons */
+.doctor-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.doctor-actions button {
+    flex: 1;
+    padding: 11px;
+    border: none;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.edit-doctor-btn {
+    background: #f0edff;
+    color: #6d5ae6;
+}
+
+.edit-doctor-btn:hover {
+    background: #e4deff;
+}
+
+.delete-doctor-btn {
+    background: #fff0f0;
+    color: #d43d3d;
+}
+
+.delete-doctor-btn:hover {
+    background: #ffe0e0;
+}
+
+/* Loading / Empty / Error */
+.doctors-message {
+    text-align: center;
+    color: #68718a;
+    font-size: 15px;
+    padding: 20px 0;
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+    .doctors-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .doctors-section {
+        padding: 18px;
+    }
+
+    .doctors-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .doctors-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+
+/* /// Edit model        */
+
+/* Modal Background */
+.edit-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(24, 29, 55, 0.55);
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+/* Show Modal */
+.edit-modal.show {
+    display: flex;
+}
+
+/* Modal Box */
+.edit-modal-content {
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.18);
+}
+
+/* Modal Header */
+.edit-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.edit-modal-header h2 {
+    margin: 0 0 7px;
+    color: #20284b;
+    font-size: 24px;
+}
+
+.edit-modal-header p {
+    margin: 0;
+    color: #68718a;
+    font-size: 14px;
+}
+
+.close-modal-btn {
+    border: none;
+    background: transparent;
+    color: #68718a;
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+/* Form Fields */
+.edit-form-group {
+    margin-bottom: 20px;
+}
+
+.edit-form-group label {
+    display: block;
+    color: #20284b;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.edit-form-group input,
+.edit-form-group select {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid #e4e5ef;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #20284b;
+    font-size: 14px;
+    outline: none;
+}
+
+.edit-form-group input:focus,
+.edit-form-group select:focus {
+    border-color: #6d5ae6;
+    box-shadow: 0 0 0 3px rgba(109, 90, 230, 0.10);
+}
+
+/* Form Buttons */
+.edit-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.edit-form-actions button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-edit-btn {
+    background: #f0f1f6;
+    color: #4d5570;
+}
+
+.save-doctor-btn {
+    background: #6d5ae6;
+    color: #ffffff;
+}
+
+.save-doctor-btn:hover {
+    background: #5744cf;
+}
+
+.save-doctor-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Success / Error Message */
+.edit-doctor-message {
+    font-size: 14px;
+    margin: 12px 0;
+}
+
+.edit-doctor-message.error {
+    color: #d43d3d;
+}
+
+.edit-doctor-message.success {
+    color: #16834a;
+}
+
+@media (max-width: 500px) {
+    .edit-modal-content {
+        padding: 20px;
+    }
+
+    .edit-form-actions button {
+        padding: 11px 13px;
+    }
+}

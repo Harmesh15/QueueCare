@@ -1,67 +1,132 @@
+const mongoose = require('mongoose');
+const bcrypt = require("bcryptjs");
 const Doctor = require('../models/Doctor');
 const User = require('../models/user');
 const Clinic = require('../models/Clinic');
 
+
 exports.createDoctor = async (req, res, next) => {
+    let createdUser = null;
+
     try {
-        const { userId, clinicId, specialization, consultationDuration } = req.body;
+        const {
+            name,
+            email,
+            password,
+            clinicId,
+            specialization,
+            consultationDuration
+        } = req.body;
 
-    if ( !userId || !clinicId || !specialization || consultationDuration == null ) {
-        return res.status(400).json({
-            message: 'All doctor fields are required'
+        // 1. Validate required fields
+        if (
+            !name?.trim() ||
+            !email?.trim() ||
+            !password ||
+            !clinicId ||
+            !specialization?.trim() ||
+            consultationDuration == null
+        ) {
+            return res.status(400).json({
+                message: 'All doctor fields are required'
+            });
+        }
+
+        // 2. Validate consultation duration
+        const duration = Number(consultationDuration);
+
+        if (!Number.isFinite(duration) || duration <= 0) {
+            return res.status(400).json({
+                message: 'Consultation duration must be a positive number'
+            });
+        }
+
+        // 3. Validate clinic ID
+        if (!mongoose.isValidObjectId(clinicId)) {
+            return res.status(400).json({
+                message: 'Invalid clinic ID'
+            });
+        }
+
+        // 4. Check if clinic exists
+        const clinic = await Clinic.findById(clinicId);
+
+        if (!clinic) {
+            return res.status(404).json({
+                message: 'Clinic not found'
+            });
+        }
+
+        // 5. Check duplicate email
+        const normalizedEmail = email.trim().toLowerCase();
+
+        const existingUser = await User.findOne({
+            email: normalizedEmail
         });
-    }
 
-    if (
-        !Number.isFinite(consultationDuration) ||
-        consultationDuration <= 0
-    ) {
-        return res.status(400).json({
-            message: 'Consultation duration must be a positive number'
+        if (existingUser) {
+            return res.status(409).json({
+                message: 'Email is already registered'
+            });
+        }
+
+        // 6. Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // 7. Create User account with doctor role
+        createdUser = await User.create({
+            name: name.trim(),
+            email: normalizedEmail,
+            password: hashedPassword,
+            role: 'doctor'
         });
-    }
 
-    const doctorUser = await User.findById(userId);
-
-    if (!doctorUser || doctorUser.role !== 'doctor') {
-        return res.status(400).json({
-            message: 'A valid user with doctor role is required'
+        // 8. Create Doctor profile linked to User
+        const doctor = await Doctor.create({
+            userId: createdUser._id,
+            clinicId,
+            specialization: specialization.trim(),
+            consultationDuration: duration
         });
-    }
 
-    const clinic = await Clinic.findById(clinicId);
-
-    if (!clinic) {
-        return res.status(404).json({
-            message: 'Clinic not found'
+        // 9. Send response
+        return res.status(201).json({
+            message: 'Doctor created successfully',
+            doctor: {
+                _id: doctor._id,
+                userId: createdUser._id,
+                name: createdUser.name,
+                email: createdUser.email,
+                role: createdUser.role,
+                clinicId: doctor.clinicId,
+                specialization: doctor.specialization,
+                consultationDuration: doctor.consultationDuration,
+                isAvailable: doctor.isAvailable
+            }
         });
+
+    } catch (error) {
+        // Roll back the newly created User if profile creation fails.
+        if (createdUser) {
+            try {
+                await User.findByIdAndDelete(createdUser._id);
+            } catch (cleanupError) {
+                console.error(
+                    'Failed to clean up doctor user:',
+                    cleanupError
+                );
+            }
+        }
+
+        if (error.code === 11000) {
+            return res.status(409).json({
+                message: 'Email is already registered'
+            });
+        }
+
+        next(error);
     }
-
-    const existingDoctor = await Doctor.findOne({ userId });
-
-    if (existingDoctor) {
-        return res.status(409).json({
-            message: 'Doctor profile already exists for this user'
-        });
-    }
-
-    const doctor = await Doctor.create({
-        userId,
-        clinicId,
-        specialization,
-        consultationDuration
-    });
-
-    res.status(201).json({
-        message: 'Doctor created successfully',
-        doctor
-    });
-
-} catch (error) {
-    next(error);
-}
-}
-
+};
 
 
 

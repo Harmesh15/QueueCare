@@ -1,7 +1,7 @@
-
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const Doctor = require('../models/Doctor');
+const Appointment = require('../models/appointment');
 
 module.exports = (io) => {
 
@@ -24,6 +24,8 @@ module.exports = (io) => {
             next(new Error('Invalid or expired token'));
         }
     });
+
+
 
     io.on('connection', (socket) => {
         console.log('Authenticated client connected:', socket.id);
@@ -77,6 +79,65 @@ module.exports = (io) => {
                 });
             }
         });
+
+
+
+
+        socket.on('joinPatientQueue', async (appointmentId, callback) => {
+    try {
+        if (socket.user.role !== 'patient') {
+            return callback?.({
+                success: false,
+                message: 'Only patients can join their queue'
+            });
+        }
+
+        if (!mongoose.isValidObjectId(appointmentId)) {
+            return callback?.({
+                success: false,
+                message: 'Invalid appointment ID'
+            });
+        }
+
+        const appointment = await Appointment.findOne({
+            _id: appointmentId,
+            patientId: socket.user.userId
+        }).select('doctorId');
+
+        if (!appointment) {
+            return callback?.({
+                success: false,
+                message: 'Appointment not found for this patient'
+            });
+        }
+
+        const room = `queue:${appointment.doctorId}`;
+
+        socket.join(room);
+
+        console.log(
+            `Patient joined queue: ${room}`
+        );
+
+        return callback?.({
+            success: true,
+            message: 'Patient joined queue successfully'
+        });
+
+    } catch (error) {
+        console.error('joinPatientQueue error:', error);
+
+        return callback?.({
+            success: false,
+            message: 'Unable to join queue'
+        });
+    }
+});
+
+
+
+
+
 
         socket.on('disconnect', () => {
             console.log('Client disconnected:', socket.id);

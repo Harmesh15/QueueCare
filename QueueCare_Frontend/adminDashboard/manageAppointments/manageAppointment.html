@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Appointments | QueueCare</title>
+
+    <link rel="stylesheet" href="./manageAppointment.css">
+</head>
+<body>
+    <div class="page-container">
+
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-icon">Q</div>
+                <div>
+                    <h2>QueueCare</h2>
+                    <p>Appointment Management</p>
+                </div>
+            </div>
+
+            <a href="/adminDashboard/admin-dashboard.html" class="back-link">
+                ← Admin Dashboard
+            </a>
+        </header>
+
+        <main>
+            <section class="page-heading">
+                <div>
+                    <span class="eyebrow">ADMIN PANEL</span>
+                    <h1>Manage Appointments</h1>
+                    <p>Find appointments by date and status, and remove records when needed.</p>
+                </div>
+                <div class="heading-icon">▣</div>
+            </section>
+
+            <!-- Filters -->
+            <section class="filter-panel">
+                <div class="filter-title">
+                    <div>
+                        <h2>Filter Appointments</h2>
+                        <p>Select a date, status, or both.</p>
+                    </div>
+
+                    <button type="button" id="refreshAppointments">
+                        ↻ Refresh
+                    </button>
+                </div>
+
+                <div class="filter-grid">
+                    <label>
+                        Appointment Date
+                        <input type="date" id="filterDate">
+                    </label>
+
+                    <label>
+                        Appointment Status
+                        <select id="filterStatus">
+                            <option value="all">All Statuses</option>
+                            <option value="booked">Booked</option>
+                            <option value="waiting">Waiting</option>
+                            <option value="called">Called</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="skipped">Skipped</option>
+                        </select>
+                    </label>
+
+                    <div class="filter-actions">
+                        <button type="button" id="applyFilters">
+                            Apply Filters
+                        </button>
+
+                        <button type="button" id="clearFilters">
+                            Clear Filters
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Summary -->
+            <section class="summary-row">
+                <div class="summary-card">
+                    <span class="summary-label">Matching Appointments</span>
+                    <strong id="matchingCount">0</strong>
+                </div>
+
+                <div class="summary-card">
+                    <span class="summary-label">Current Filter</span>
+                    <strong id="currentFilterLabel">All</strong>
+                </div>
+            </section>
+
+            <!-- Results -->
+            <section class="results-panel">
+                <div class="results-heading">
+                    <div>
+                        <h2>Appointments</h2>
+                        <p id="resultsSubtitle">All available appointments</p>
+                    </div>
+                </div>
+
+                <div id="appointmentMessage" class="message hidden"></div>
+
+                <div id="appointmentsGrid" class="appointments-grid"></div>
+
+                <div id="emptyState" class="empty-state hidden">
+                    <div class="empty-icon">⌕</div>
+                    <h3>No appointments found</h3>
+                    <p>Try changing the selected date or status.</p>
+                </div>
+
+                <div class="pagination">
+                    <span id="pageInfo">Page 1 of 1</span>
+
+                    <div class="pagination-buttons">
+                        <button type="button" id="prevPage"
+                                class="btn btn-light" disabled>
+                            Previous
+                        </button>
+
+                        <button type="button" id="nextPage"
+                                class="btn btn-light" disabled>
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./manageAppointment.js"></script>
+</body>
+</html>

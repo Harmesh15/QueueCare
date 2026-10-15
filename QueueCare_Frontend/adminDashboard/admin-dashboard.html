@@ -59,9 +59,10 @@
             </div>
 
             <div class="management-grid">
+                
 
                 <!-- Manage Doctors -->
-                <a href="/adminDashboard/manage-doctors.html"
+                <a href="./manageDoctor/mangeDoctor.html"
                    class="management-card">
 
                     <div class="card-image">
@@ -92,7 +93,7 @@
                 </a>
 
                 <!-- Manage Clinics -->
-                <a href="/adminDashboard/manage-clinics.html"
+                <a href="./manageClinic/manageClinic.html"
                    class="management-card">
 
                     <div class="card-image">
@@ -123,7 +124,7 @@
                 </a>
 
                 <!-- Manage Availability -->
-                <a href="/adminDashboard/manage-availability.html"
+                <a href="./manageAvailability/manageAvailability.html"
                    class="management-card">
 
                     <div class="card-image">
@@ -154,7 +155,7 @@
                 </a>
 
                 <!-- Manage Appointments -->
-                <a href="/adminDashboard/manage-appointments.html"
+                <a href="./manageAppointments/manageAppointment.html"
                    class="management-card">
 
                     <div class="card-image">
@@ -225,7 +226,7 @@
             () => {
                 localStorage.removeItem("token");
                 localStorage.removeItem("user");
-                window.location.href = "/login.html";
+                window.location.href = "../login/login.html";
             }
         );
     </script>

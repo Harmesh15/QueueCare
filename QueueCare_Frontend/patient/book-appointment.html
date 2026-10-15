@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment | QueueCare</title>
+    <link rel="stylesheet" href="./book-appointment.css">
+</head>
+<body>
+    <header class="topbar">
+        <a href="./patient.html" class="brand">QueueCare</a>
+        <a href="./patient.html" class="back-link">← Dashboard</a>
+    </header>
+
+    <main class="page">
+        <div class="page-heading">
+            <span class="eyebrow">APPOINTMENT BOOKING</span>
+            <h1>Book your appointment</h1>
+            <p>Choose your clinic, doctor, date and an available time slot.</p>
+            <button id="openBookingBtn" class="primary-btn">Book Appointment</button>
+        </div>
+
+        <div id="bookingOverlay" class="modal-overlay">
+            <section class="booking-modal" role="dialog"
+                     aria-modal="true" aria-labelledby="modalTitle">
+                <button id="closeBookingBtn" class="close-btn"
+                        type="button" aria-label="Close">&times;</button>
+
+                <span class="eyebrow">NEW APPOINTMENT</span>
+                <h2 id="modalTitle">Book an appointment</h2>
+                <p class="modal-description">
+                    Select your preferred clinic and appointment time.
+                </p>
+
+                <form id="bookingForm">
+                    <label for="clinicId">Select Clinic</label>
+                    <select id="clinicId" required>
+                        <option value="">Loading clinics...</option>
+                    </select>
+
+                    <label for="doctorId">Select Doctor</label>
+                    <select id="doctorId" required disabled>
+                        <option value="">Select a clinic first</option>
+                    </select>
+
+                    <label for="appointmentDate">Appointment Date</label>
+                    <input type="date" id="appointmentDate" required disabled>
+
+                    <div class="slots-heading">
+                        <label>Available Time Slots</label>
+                        <span id="slotsHint">Select doctor and date</span>
+                    </div>
+
+                    <div id="slotsContainer" class="slots-container">
+                        <p class="empty-slots">
+                            Available slots will appear here.
+                        </p>
+                    </div>
+
+                    <p id="bookingMessage" class="message" role="status"></p>
+
+                    <button id="bookBtn" class="primary-btn submit-btn"
+                            type="submit" disabled>
+                        Confirm Appointment
+                    </button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./book-appointment.js"></script>
+</body>
+</html>

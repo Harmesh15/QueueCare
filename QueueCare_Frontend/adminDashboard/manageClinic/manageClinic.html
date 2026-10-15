@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Clinics | QueueCare</title>
+    <link rel="stylesheet" href="./manageClinic.css">
+</head>
+<body>
+    <div class="page-container">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-icon">Q</div>
+                <div>
+                    <h2>QueueCare</h2>
+                    <p>Clinic Management</p>
+                </div>
+            </div>
+
+            <a href="/adminDashboard/admin-dashboard.html" class="back-link">
+                ← Admin Dashboard
+            </a>
+        </header>
+
+        <main>
+            <section class="page-heading">
+                <div>
+                    <span class="eyebrow">ADMIN PANEL</span>
+                    <h1>Manage Clinics</h1>
+                    <p>Add new clinics and manage your existing clinic details.</p>
+                </div>
+                <div class="clinic-count">
+                    <span id="totalClinics">0</span>
+                    <small>Total Clinics</small>
+                </div>
+            </section>
+
+            <nav class="tabs">
+                <button class="tab active" data-section="addSection">
+                    + Add Clinic
+                </button>
+                <button class="tab" data-section="viewSection">
+                    View Clinics
+                </button>
+            </nav>
+
+            <!-- Add Clinic -->
+            <section id="addSection" class="content-section">
+                <div class="section-heading">
+                    <h2>Add New Clinic</h2>
+                    <p>Enter the clinic's details below.</p>
+                </div>
+
+                <form id="addClinicForm" class="clinic-form">
+                    <div class="form-grid">
+                        <label>
+                            Clinic Name
+                            <input
+                                type="text"
+                                id="clinicName"
+                                placeholder="e.g. City Care Clinic"
+                                required
+                            >
+                        </label>
+
+                        <label>
+                            Phone Number
+                            <input
+                                type="tel"
+                                id="clinicPhone"
+                                placeholder="Enter phone number"
+                                required
+                            >
+                        </label>
+
+                        <label class="full-width">
+                            Clinic Address
+                            <textarea
+                                id="clinicAddress"
+                                placeholder="Enter complete clinic address"
+                                rows="3"
+                                required
+                            ></textarea>
+                        </label>
+
+                        <label>
+                            Opening Time
+                            <input type="time" id="openingTime" required>
+                        </label>
+
+                        <label>
+                            Closing Time
+                            <input type="time" id="closingTime" required>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="reset" class="btn btn-light">Clear Form</button>
+                        <button type="submit" class="btn btn-primary" id="addClinicBtn">
+                            Add Clinic
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- View Clinics -->
+            <section id="viewSection" class="content-section hidden">
+                <div class="section-heading view-heading">
+                    <div>
+                        <h2>All Clinics</h2>
+                        <p>View, update or remove clinic profiles.</p>
+                    </div>
+                    <button id="refreshClinics" class="btn btn-light">
+                        ↻ Refresh
+                    </button>
+                </div>
+
+                <div class="search-row">
+                    <input
+                        type="search"
+                        id="searchClinic"
+                        placeholder="Search by clinic name, address or phone..."
+                    >
+                </div>
+
+                <div id="clinicMessage" class="message hidden"></div>
+                <div id="clinicGrid" class="clinic-grid"></div>
+
+                <div id="emptyState" class="empty-state hidden">
+                    <div class="empty-icon">⌕</div>
+                    <h3>No clinics found</h3>
+                    <p>Try another search or add a new clinic.</p>
+                </div>
+
+                <div class="pagination">
+                    <span id="pageInfo">Page 1 of 1</span>
+                    <div>
+                        <button id="prevPage" class="btn btn-light" disabled>
+                            Previous
+                        </button>
+                        <button id="nextPage" class="btn btn-light" disabled>
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Edit Clinic Modal -->
+    <dialog id="editClinicDialog" class="edit-dialog">
+        <form id="editClinicForm">
+            <div class="modal-heading">
+                <div>
+                    <h2>Edit Clinic</h2>
+                    <p>Update the clinic details.</p>
+                </div>
+                <button type="button" id="closeEdit" class="close-btn"
+                    aria-label="Close">×</button>
+            </div>
+
+            <div class="form-grid">
+                <label>
+                    Clinic Name
+                    <input type="text" id="editName" required>
+                </label>
+
+                <label>
+                    Phone Number
+                    <input type="tel" id="editPhone" required>
+                </label>
+
+                <label class="full-width">
+                    Clinic Address
+                    <textarea id="editAddress" rows="3" required></textarea>
+                </label>
+
+                <label>
+                    Opening Time
+                    <input type="time" id="editOpeningTime" required>
+                </label>
+
+                <label>
+                    Closing Time
+                    <input type="time" id="editClosingTime" required>
+                </label>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="cancelEdit" class="btn btn-light">
+                    Cancel
+                </button>
+                <button type="submit" id="saveClinicBtn" class="btn btn-primary">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="./manageClinic.js"></script>
+</body>
+</html>

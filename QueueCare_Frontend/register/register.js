@@ -56,3 +56,6 @@ if (registerForm) {
         await registerUser();
     });
 }
+
+document.getElementById("currentYear").textContent =
+    new Date().getFullYear();

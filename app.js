@@ -29,9 +29,19 @@ const io = new Server(server, {
 }); 
 
 app.use(express.json());
+
+// Frontend ki CSS, JS aur images serve karne ke liye
+app.use(express.static(
+    path.join(__dirname, 'QueueCare_Frontend')
+));
+
+
+
 app.get('/',(req,res)=>{
-    res.sendFile(path.join(__dirname, "QueueCare_Frontend", 'index.html' ));
-})
+    res.sendFile(
+        path.join(__dirname, "QueueCare_Frontend", 'index.html' )
+    );
+});
 
 
 app.set('io', io);

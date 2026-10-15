@@ -53,6 +53,41 @@ exports.register = async (req,res,next)=>{
 
 
 
+const recordFailedLogin = async (req, res) => {
+    const key = req.loginRateLimitKey;
+
+    const attempts = await redisClient.incr(key);
+
+    // First failed attempt par counter ki expiry set karo.
+    if (attempts === 1) {
+        await redisClient.expire(key, 60);
+    }
+
+    // Fifth consecutive failure par fresh 60-second lockout.
+    if (attempts >= 5) {
+        await redisClient.expire(key, 60);
+
+        const ttl = await redisClient.ttl(key);
+
+        return res.status(429).json({
+            message: "Too many failed login attempts. Please wait.",
+            locked: true,
+            remainingAttempts: 0,
+            remainingSeconds: Math.max(ttl, 0)
+        });
+    }
+
+    return res.status(401).json({
+        message: "Invalid email or password",
+        attempts,
+        remainingAttempts: 5 - attempts,
+        locked: false
+    });
+};
+
+
+
+
 /// User login
 
 exports.login = async (req,res,next)=>{
@@ -68,33 +103,26 @@ exports.login = async (req,res,next)=>{
         const user = await User.findOne({email});
 
         if (!user) {
-
-            const attempts = await redisClient.incr(req.loginRateLimitKey);
-
-              if (attempts === 1) {
-               await redisClient.expire(req.loginRateLimitKey, 60);
-             }
-
-            return res.status(401).json({
-                message: 'Invalid email or password'
-            });
-        }
+               return await recordFailedLogin(req, res);
+           }
  
 
     const isPassMatched = await bcrypt.compare(password,user.password);
 
         if (!isPassMatched) {
 
-            const attempts = await redisClient.incr(req.loginRateLimitKey);
-            console.log('Failed login count:', attempts);
+             return await recordFailedLogin(req, res);
 
-            if (attempts === 1) {
-                await redisClient.expire(req.loginRateLimitKey, 60);
-            }
+            // const attempts = await redisClient.incr(req.loginRateLimitKey);
+            // console.log('Failed login count:', attempts);
 
-            return res.status(401).json({
-                message: 'Invalid email or password'
-            });
+            // if (attempts === 1) {
+            //     await redisClient.expire(req.loginRateLimitKey, 60);
+            // }
+
+            // return res.status(401).json({
+            //     message: 'Invalid email or password'
+            // });
         }
 
 

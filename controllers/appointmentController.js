@@ -417,6 +417,101 @@ exports.getMyAppointments = async (req, res, next) => {
 
 
 
+// admin 
+
+exports.getMyAppointments = async (req, res, next) => {
+    
+    try {
+        // 4. Cache miss: fetch from MongoDB
+        const appointments = await Appointment.find()
+            .select(
+                'appointmentDate appointmentTime tokenNumber status doctorId clinicId'
+            )
+            .populate({
+                path: 'doctorId',
+                select: 'userId specialization consultationDuration',
+                populate: {
+                    path: 'userId',
+                    select: 'name'
+                }
+            })
+            .populate('clinicId', 'name address')
+            .sort({
+                appointmentDate: 1,
+                appointmentTime: 1
+            });
+
+        // 5. Format response data
+        const formattedAppointments = appointments.map(appointment => ({
+            appointmentId: appointment._id,
+            date: appointment.appointmentDate,
+            time: appointment.appointmentTime,
+            tokenNumber: appointment.tokenNumber,
+            status: appointment.status,
+
+            doctor: appointment.doctorId
+                ? {
+                    name: appointment.doctorId.userId
+                        ? appointment.doctorId.userId.name
+                        : 'Name unavailable',
+                    specialization: appointment.doctorId.specialization,
+                    consultationDuration:
+                        appointment.doctorId.consultationDuration
+                }
+                : null,
+
+            clinic: appointment.clinicId
+                ? {
+                    name: appointment.clinicId.name,
+                    address: appointment.clinicId.address
+                }
+                : null
+        }));
+        // 7. Return response
+        return res.status(200).json({
+            message: 'Your appointments fetched successfully',
+            count: formattedAppointments.length,
+            appointments: formattedAppointments
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+exports.deleteAppointment = async (req, res) => {
+    try {
+        const appointmentId = req.params.id;
+
+        const appointment = await Appointment.findById(appointmentId);
+
+        if (!appointment) {
+            return res.status(404).json({
+                success: false,
+                message: "Appointment not found"
+            });
+        }
+
+        await Appointment.findByIdAndDelete(appointmentId);
+
+        return res.status(200).json({
+            success: true,
+            message: "Appointment deleted successfully"
+        });
+
+    } catch (error) {
+        console.log("Delete appointment error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to delete appointment",
+            error: error.message
+        });
+    }
+};
+
 
 exports.cancelAppointment = async (req, res, next) => {
     try {
@@ -795,3 +890,250 @@ exports.callNextPatient = async (req, res, next) => {
 
 
 
+// doctor work
+
+
+exports.getDoctorAppointments = async (req, res, next) => {
+    try {
+        // Logged-in doctor ke User account se Doctor profile find karo
+        const doctor = await Doctor.findOne({
+            userId: req.user.userId
+        });
+
+        if (!doctor) {
+            return res.status(404).json({
+                message: "Doctor profile not found"
+            });
+        }
+
+        // Sirf isi doctor ko assigned appointments fetch hongi
+        const appointments = await Appointment.find({
+            doctorId: doctor._id
+        })
+            .select(
+                "patientId doctorId clinicId appointmentDate appointmentTime tokenNumber status priority"
+            )
+            .populate("patientId", "name email")
+            .populate("clinicId", "name address")
+            .sort({
+                appointmentDate: 1,
+                appointmentTime: 1
+            });
+
+        const formattedAppointments = appointments.map(appointment => ({
+            appointmentId: appointment._id,
+            date: appointment.appointmentDate,
+            time: appointment.appointmentTime,
+            tokenNumber: appointment.tokenNumber,
+            status: appointment.status,
+
+            patient: appointment.patientId
+                ? {
+                    patientId: appointment.patientId._id,
+                    name: appointment.patientId.name,
+                    email: appointment.patientId.email
+                }
+                : null,
+
+            clinic: appointment.clinicId
+                ? {
+                    name: appointment.clinicId.name,
+                    address: appointment.clinicId.address
+                }
+                : null
+        }));
+
+        return res.status(200).json({
+            message: "Doctor appointments fetched successfully",
+            count: formattedAppointments.length,
+            appointments: formattedAppointments
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+
+
+exports.updateAppointmentStatus = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        // Validate appointment ID
+        if (!mongoose.isValidObjectId(id)) {
+            return res.status(400).json({
+                message: "Invalid appointment ID"
+            });
+        }
+
+        // Doctor profile belonging to the logged-in user
+        const doctor = await Doctor.findOne({
+            userId: req.user.userId
+        });
+
+        if (!doctor) {
+            return res.status(404).json({
+                message: "Doctor profile not found"
+            });
+        }
+
+        // Doctor can only complete or cancel appointments
+        const allowedStatuses = ["completed", "cancelled"];
+
+        if (!allowedStatuses.includes(status)) {
+            return res.status(400).json({
+                message: "Status must be completed or cancelled"
+            });
+        }
+
+        // Find appointment assigned to THIS doctor
+        const appointment = await Appointment.findOne({
+            _id: id,
+            doctorId: doctor._id
+        });
+
+        if (!appointment) {
+            return res.status(404).json({
+                message: "Appointment not found for this doctor"
+            });
+        }
+
+        // Prevent changing terminal statuses
+        if (
+            ["completed", "cancelled", "skipped"].includes(
+                appointment.status
+            )
+        ) {
+            return res.status(400).json({
+                message: `Cannot update appointment with status: ${appointment.status}`
+            });
+        }
+
+        // Appointment must be called before marking it completed
+        if (
+            status === "completed" &&
+            appointment.status !== "called"
+        ) {
+            return res.status(400).json({
+                message: "Call the patient before completing the appointment"
+            });
+        }
+
+        appointment.status = status;
+        await appointment.save();
+
+        // Invalidate the patient's appointments cache
+        const patientCacheKey =
+            `appointments:patient:${appointment.patientId}`;
+
+        await redisClient.del(patientCacheKey);
+
+        // Notify connected clients in this doctor's queue room
+        const io = req.app.get("io");
+
+        if (io) {
+            io.to(`queue:${doctor._id}`).emit("queueUpdated", {
+                doctorId: String(doctor._id),
+                appointmentId: String(appointment._id),
+                tokenNumber: appointment.tokenNumber,
+                status: appointment.status
+            });
+        }
+
+        return res.status(200).json({
+            message: status === "completed"
+                ? "Appointment marked as completed"
+                : "Appointment cancelled successfully",
+
+            appointment: {
+                appointmentId: appointment._id,
+                date: appointment.appointmentDate,
+                time: appointment.appointmentTime,
+                tokenNumber: appointment.tokenNumber,
+                status: appointment.status
+            }
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+
+// queue update by callNext
+
+exports.getMyQueueStatus = async (req, res, next) => {
+    try {
+        const { appointmentId } = req.params;
+
+        if (!mongoose.isValidObjectId(appointmentId)) {
+            return res.status(400).json({
+                message: "Invalid appointment ID"
+            });
+        }
+
+        // Patient sirf apni appointment dekh sakta hai
+        const appointment = await Appointment.findOne({
+            _id: appointmentId,
+            patientId: req.user.userId
+        })
+            .populate("doctorId", "userId specialization")
+            .populate("clinicId", "name address");
+
+        if (!appointment) {
+            return res.status(404).json({
+                message: "Appointment not found"
+            });
+        }
+
+        const start = new Date(appointment.appointmentDate);
+        const end = new Date(start.getTime() + 24 * 60 * 60 * 1000);
+
+        const sameDayAppointments = await Appointment.find({
+            doctorId: appointment.doctorId._id,
+            appointmentDate: {
+                $gte: start,
+                $lt: end
+            },
+            status: { $in: ["booked", "waiting", "called"] }
+        })
+            .select("tokenNumber status")
+            .sort({ tokenNumber: 1 });
+
+        const currentlyCalled = sameDayAppointments.find(
+            item => item.status === "called"
+        );
+
+        const patientsAhead = sameDayAppointments.filter(
+            item =>
+                item.tokenNumber < appointment.tokenNumber &&
+                ["booked", "waiting"].includes(item.status)
+        ).length;
+
+        return res.status(200).json({
+            appointmentId: appointment._id,
+            tokenNumber: appointment.tokenNumber,
+            status: appointment.status,
+            patientsAhead,
+            currentlyServingToken: currentlyCalled?.tokenNumber ?? null,
+            doctorId: appointment.doctorId._id,
+            doctor: {
+                specialization: appointment.doctorId.specialization
+            },
+            clinic: appointment.clinicId
+                ? {
+                    name: appointment.clinicId.name,
+                    address: appointment.clinicId.address
+                }
+                : null
+        });
+    } catch (error) {
+        next(error);
+    }
+};

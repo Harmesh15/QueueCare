@@ -18,7 +18,6 @@ router.put( '/:id', authMiddleware, roleMiddleware('admin'),
 clinicController.updateClinic);
 
 
-
 router.delete(
     '/:id',
     authMiddleware,

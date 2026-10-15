@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./appointment.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <section class="appointments-section">
+
+    <div class="appointments-header">
+        <div>
+            <h2>My Appointments</h2>
+            <p>View your clinic appointments and booking details</p>
+        </div>
+
+        <span class="appointments-count" id="appointmentsCount">
+            0 Appointments
+        </span>
+         <a href="../patient/patient.html" class="back-link">← Dashboard</a>
+    </div>
+
+    <!-- Dynamic Appointment Cards -->
+    <div
+        class="appointments-grid"
+        id="appointmentsContainer"
+    >
+        <!-- Cards will be generated using JavaScript -->
+    </div>
+
+    <!-- Loading / Empty / Error Message -->
+    <p
+        class="appointments-message"
+        id="appointmentsMessage"
+        role="status"
+    ></p>
+
+</section>
+    
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="./appointment.js"></script>
+</body>
+</html>

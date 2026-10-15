@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Doctors | QueueCare</title>
+    <link rel="stylesheet" href="./manageDoctor.css">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="/adminDashboard/admin-dashboard.html">
+            QueueCare <span>Admin</span>
+        </a>
+        <a class="back-link" href="../admin-dashboard.html">
+            ← Dashboard
+        </a>
+    </header>
+
+    <main class="container">
+        <section class="page-heading">
+            <div>
+                <p class="eyebrow">ADMINISTRATION</p>
+                <h1>Manage Doctors</h1>
+                <p class="subtitle">
+                    Create doctor accounts and manage their profiles.
+                </p>
+            </div>
+            <div class="doctor-count">
+                <span id="doctorCount">0</span>
+                <small>Total doctors</small>
+            </div>
+        </section>
+
+        <nav class="tabs">
+            <button class="tab active" data-section="addSection">
+                + Add Doctor
+            </button>
+            <button class="tab" data-section="viewSection">
+                View Doctors
+            </button>
+        </nav>
+
+        <div id="pageMessage" class="message" role="status"></div>
+
+        <section id="addSection" class="panel">
+            <div class="section-heading">
+                <h2>Add New Doctor</h2>
+                <p>Create the doctor's login account and professional profile.</p>
+            </div>
+
+            <form id="addDoctorForm">
+                <div class="form-grid">
+                    <label>
+                        Doctor Name
+                        <input name="name" required maxlength="100"
+                            placeholder="e.g. Dr. Rahul Sharma">
+                    </label>
+
+                    <label>
+                        Email Address
+                        <input name="email" type="email" required
+                            placeholder="doctor@example.com">
+                    </label>
+
+                    <label>
+                        Temporary Password
+                        <input name="password" type="password" required
+                            minlength="8" placeholder="Minimum 8 characters">
+                    </label>
+
+                    <label>
+                        Clinic
+                        <select name="clinicId" id="addClinic" required>
+                            <option value="">Select clinic</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Specialization
+                        <input name="specialization" required
+                            placeholder="e.g. Cardiology">
+                    </label>
+
+                    <label>
+                        Consultation Duration
+                        <select name="consultationDuration" required>
+                            <option value="10">10 minutes</option>
+                            <option value="15" selected>15 minutes</option>
+                            <option value="20">20 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="60">60 minutes</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="role-note">
+                    <span class="role-icon">✓</span>
+                    <div>
+                        <strong>Doctor role assigned automatically</strong>
+                        <p>The server sets the role. It cannot be selected here.</p>
+                    </div>
+                </div>
+
+                <button class="primary-btn" type="submit" id="addButton">
+                    Create Doctor
+                </button>
+            </form>
+        </section>
+
+        <section id="viewSection" class="panel" hidden>
+            <div class="section-heading">
+                <h2>Doctor Profiles</h2>
+                <p>View and manage doctors registered with your clinics.</p>
+            </div>
+
+            <div class="toolbar">
+                <input id="searchDoctors" type="search"
+                    placeholder="Search by name or specialization...">
+                <button class="secondary-btn" id="refreshDoctors" type="button">
+                    ↻ Refresh
+                </button>
+            </div>
+
+            <div id="doctorsGrid" class="doctors-grid"></div>
+
+            <div id="emptyState" class="empty-state" hidden>
+                <div class="empty-icon">＋</div>
+                <h3>No doctors found</h3>
+                <p>Try another search or add a new doctor.</p>
+            </div>
+
+            <div class="pagination">
+                <button id="previousPage" class="secondary-btn" type="button">
+                    ← Previous
+                </button>
+                <span id="pageInfo">Page 1 of 1</span>
+                <button id="nextPage" class="secondary-btn" type="button">
+                    Next →
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <dialog id="editModal" class="edit-modal">
+        <form id="editDoctorForm">
+            <div class="modal-heading">
+                <div>
+                    <p class="eyebrow">DOCTOR PROFILE</p>
+                    <h2>Edit Doctor</h2>
+                </div>
+                <button type="button" id="closeModal"
+                    class="close-btn" aria-label="Close">×</button>
+            </div>
+
+            <input type="hidden" name="doctorId" id="editDoctorId">
+
+            <p id="editDoctorName" class="edit-name"></p>
+
+            <div class="form-grid">
+                <label>
+                    Clinic
+                    <select name="clinicId" id="editClinic" required>
+                        <option value="">Select clinic</option>
+                    </select>
+                </label>
+
+                <label>
+                    Specialization
+                    <input name="specialization" id="editSpecialization"
+                        required>
+                </label>
+
+                <label>
+                    Consultation Duration
+                    <select name="consultationDuration"
+                        id="editDuration" required>
+                        <option value="10">10 minutes</option>
+                        <option value="15">15 minutes</option>
+                        <option value="20">20 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60">60 minutes</option>
+                    </select>
+                </label>
+
+                <label>
+                    Availability
+                    <select name="isAvailable" id="editAvailability" required>
+                        <option value="true">Available</option>
+                        <option value="false">Unavailable</option>
+                    </select>
+                </label>
+
+                <!-- <label>
+                    Working Start Time
+                    <input type="time" id="editStartTime">
+                </label> -->
+
+                <!-- <label>
+                    Working End Time
+                    <input type="time" id="editEndTime">
+                </label> -->
+            </div>
+
+            <p class="hint">
+                Working hours must be connected to your DoctorAvailability
+                API before those time changes can be saved.
+            </p>
+
+            <div id="editMessage" class="message" role="status"></div>
+
+            <div class="modal-actions">
+                <button type="button" class="secondary-btn" id="cancelEdit">
+                    Cancel
+                </button>
+                <button type="submit" class="primary-btn" id="saveEdit">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="./manageDoctor.js" defer></script>
+</body>
+</html>

@@ -10,11 +10,25 @@ const loginRateLimiter = async (req, res, next) => {
         console.log('Rate limiter IP:', ip);
         console.log('Failed attempts in Redis:', attempts);
 
-        if (attempts >= 5) {
-            return res.status(429).json({
-                message: 'Too many failed login attempts. Try again after 1 minute.'
-            });
-        }
+        // if (attempts >= 5) {
+        //     return res.status(429).json({
+        //         message: 'Too many failed login attempts. Try again after 1 minute.'
+        //     });
+        // }
+
+
+     if (attempts >= 5) {
+         const remainingSeconds = await redisClient.ttl(key);
+
+        return res.status(429).json({
+            message: "Too many failed login attempts. Please wait before trying again.",
+            locked: true,
+            remainingAttempts: 0,
+            remainingSeconds: Math.max(remainingSeconds, 0)
+        });
+    }
+
+
 
         req.loginRateLimitKey = key;
         next();
