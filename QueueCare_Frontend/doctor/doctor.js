@@ -5,7 +5,7 @@ const doctorsMessage = document.getElementById("doctorsMessage");
 async function getAllDoctors() {
     try {
         const response = await axios.get(
-            "http://localhost:3000/api/doctors"
+            `${API_BASE}/doctors`
         );
 
         console.log(response.data);
@@ -154,7 +154,7 @@ async function deleteDoctor(doctorId) {
 
     try {
         const response = await axios.delete(
-            `http://localhost:3000/api/doctors/${doctorId}`,
+            `${API_BASE}/doctors/${doctorId}`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -229,7 +229,7 @@ async function loadClinics(selectedClinicId) {
     try {
         // Replace with your actual getAllClinics endpoint
         const response = await axios.get(
-            "http://localhost:3000/api/clinics"
+            `${API_BASE}/clinics`
         );
 
         // Supports { clinics: [...] } or a direct array
@@ -328,12 +328,11 @@ document.getElementById("editDoctorForm")
         message.textContent = "";
 
         try {
-            // Replace URL/method if your backend uses a different route
             const response = await axios.put(
-                `http://localhost:3000/api/doctors/${editingDoctorId}`,
+                `${API_BASE}/doctors/${editingDoctorId}`,
                 updatedData
             );
-
+                  
             message.textContent =
                 response.data.message || "Doctor updated successfully.";
 

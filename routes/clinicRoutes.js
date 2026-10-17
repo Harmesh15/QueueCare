@@ -14,7 +14,7 @@ router.get('/', clinicController.getAllClinics);
 router.get('/:id', clinicController.getClinicById);
 
 
-router.put( '/:id', authMiddleware, roleMiddleware('admin'), 
+router.put('/:id', authMiddleware, roleMiddleware('admin'), 
 clinicController.updateClinic);
 
 

@@ -17,7 +17,7 @@ async function registerUser() {
     };
 
     try {
-        const response = await fetch("/api/auth/register", {
+        const response = await fetch(`${API_BASE}/auth/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -38,7 +38,7 @@ async function registerUser() {
         console.log("Registered user:", data.user);
 
         // Redirect to login page after successful registration
-        window.location.href = "/login.html";
+        window.location.href = "../login/login.html";
 
     } catch (error) {
         console.error("Register error:", error);

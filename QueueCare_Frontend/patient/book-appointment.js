@@ -1,6 +1,3 @@
-
-const API = "http://localhost:3000/api";
-
 const overlay = document.getElementById("bookingOverlay");
 const openBtn = document.getElementById("openBookingBtn");
 const closeBtn = document.getElementById("closeBookingBtn");
@@ -75,7 +72,7 @@ overlay.addEventListener("click", (event) => {
 async function loadClinics() {
     try {
         const response = await axios.get(
-            `${API}/clinics`,
+            `${API_BASE}/clinics`,
             authConfig()
         );
 
@@ -125,9 +122,8 @@ clinicSelect.addEventListener("change", async () => {
     }
 
     try {
-        // Assumes GET /api/doctors returns doctors, optionally filtered by clinicId.
         const response = await axios.get(
-            `${API}/doctors`,
+            `${API_BASE}/doctors`,
             authConfig()
         );
 
@@ -223,7 +219,7 @@ async function loadAvailableSlots() {
     try {
         // Assumes query parameters: doctorId, clinicId, date.
         const response = await axios.get(
-            `${API}/appointments/available-slots`,
+            `${API_BASE}/appointments/available-slots`,
             {
                 ...authConfig(),
                 params: { doctorId, clinicId, date }
@@ -337,7 +333,7 @@ bookingForm.addEventListener("submit", async (event) => {
 
     try {
         const response = await axios.post(
-            `${API}/appointments`,
+            `${API_BASE}/appointments`,
             {
                 clinicId,
                 doctorId,

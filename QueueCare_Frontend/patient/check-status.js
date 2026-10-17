@@ -1,10 +1,5 @@
-const API_BASE = "http://localhost:3000/api/appointments";
-
-// Apne existing Express routes ke according verify karna.
-const MY_APPOINTMENTS_URL = `${API_BASE}/my-appointments`;
-
 const QUEUE_STATUS_URL = (appointmentId) =>
-    `${API_BASE}/my-queue-status/${appointmentId}`;
+    `${API_BASE}/appointments/my-queue-status/${appointmentId}`;
 
 const token = localStorage.getItem("token");
 
@@ -47,7 +42,7 @@ async function initializePage() {
 
 // Connect Socket.IO with JWT
 function connectSocket() {
-    socket = io("http://localhost:3000", {
+    socket = io({
         auth: {
             token: token
         }
@@ -81,7 +76,7 @@ async function loadMyAppointments() {
     try {
         message.textContent = "Loading your appointments...";
 
-        const response = await fetch(MY_APPOINTMENTS_URL, {
+        const response = await fetch(`${API_BASE}/appointments/my-appointments`,{
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`

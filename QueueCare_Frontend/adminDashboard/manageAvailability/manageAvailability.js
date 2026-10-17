@@ -1,8 +1,3 @@
-
-const API_BASE = "http://localhost:3000/api";
-const DOCTORS_API = `${API_BASE}/doctors`;
-const AVAILABILITY_API = `${API_BASE}/availability`;
-
 const token = localStorage.getItem("token");
 
 const weekDays = [
@@ -198,7 +193,7 @@ async function loadDoctors() {
     saveButton.disabled = true;
 
     try {
-        const data = await apiRequest(DOCTORS_API);
+        const data = await apiRequest(`${API_BASE}/doctors`);
 
         doctors = Array.isArray(data)
             ? data
@@ -260,7 +255,7 @@ async function loadWeeklyAvailability(doctorId) {
 
     try {
         const data = await apiRequest(
-            `${AVAILABILITY_API}/weekly/${doctorId}`
+            `${API_BASE}/availability/weekly/${doctorId}`
         );
 
         savedSchedule = Array.isArray(data.schedule)
@@ -355,7 +350,7 @@ saveButton.addEventListener("click", async () => {
 
     try {
         const data = await apiRequest(
-            `${AVAILABILITY_API}/weekly`,
+            `${API_BASE}/availability/weekly`,
             {
                 method: "PUT",
                 body: JSON.stringify({

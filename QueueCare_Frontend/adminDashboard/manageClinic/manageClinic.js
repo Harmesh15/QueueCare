@@ -1,7 +1,3 @@
-
-const API_BASE = "http://localhost:3000/api";
-const CLINICS_API = `${API_BASE}/clinics`;
-
 const token = localStorage.getItem("token");
 const ITEMS_PER_PAGE = 8;
 
@@ -132,7 +128,7 @@ async function loadClinics() {
     emptyState.classList.add("hidden");
 
     try {
-        const data = await apiRequest(CLINICS_API);
+        const data = await apiRequest(`${API_BASE}/clinics`);
 
         // Backend response: { message, clinics }
         clinics = Array.isArray(data)
@@ -295,7 +291,7 @@ addClinicForm.addEventListener("submit", async event => {
     button.textContent = "Adding...";
 
     try {
-        await apiRequest(CLINICS_API, {
+        await apiRequest(`${API_BASE}/clinics`, {
             method: "POST",
             body: JSON.stringify({
                 name,
@@ -375,7 +371,7 @@ editClinicForm.addEventListener("submit", async event => {
     button.textContent = "Saving...";
 
     try {
-        await apiRequest(`${CLINICS_API}/${editingClinicId}`, {
+        await apiRequest(`${API_BASE}/clinics/${editingClinicId}`, {
             method: "PUT",
             body: JSON.stringify({
                 name,
@@ -428,7 +424,7 @@ clinicGrid.addEventListener("click", async event => {
         button.disabled = true;
 
         try {
-            await apiRequest(`${CLINICS_API}/${clinicId}`, {
+            await apiRequest(`${API_BASE}/clinics/${clinicId}`, {
                 method: "DELETE"
             });
 

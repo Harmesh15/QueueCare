@@ -20,7 +20,7 @@ async function getMyAppointments() {
         const token = localStorage.getItem("token");
 
         const response = await axios.get(
-            "http://localhost:3000/api/appointments/my-appointments",
+            `${API_BASE}/appointments/my-appointments`,
             {
                 headers: token
                     ? { Authorization: `Bearer ${token}` }
@@ -233,20 +233,6 @@ function renderAppointments(response) {
 
                 actions.appendChild(cancelButton);
             }
-
-            // Delete button: shown for every appointment
-            // const deleteButton = document.createElement("button");
-
-            // deleteButton.className = "delete-appointment-btn";
-            // deleteButton.textContent = "Delete";
-
-            // deleteButton.addEventListener("click", () => {
-            //     deleteAppointment(appointment.appointmentId);
-            // });
-
-            // actions.appendChild(deleteButton);
-
-            // Append complete card
             card.append(cardTop, schedule, details, token, actions);
 
             appointmentsContainer.appendChild(card);
@@ -267,7 +253,7 @@ async function cancelAppointment(id) {
 
         // Replace with your actual cancel endpoint and HTTP method
         const response = await axios.patch(
-            `http://localhost:3000/api/appointments/${id}/cancel`,
+            `${API_BASE}/appointments/${id}/cancel`,
             {},
             {
                 headers: token
@@ -307,7 +293,7 @@ async function deleteAppointment(appointmentId) {
 
         // Replace with your actual delete endpoint
         const response = await axios.delete(
-            `http://localhost:3000/api/appointments/${appointmentId}`,
+            `${API_BASE}appointments/${appointmentId}`,
             {
                 headers: token
                     ? { Authorization: `Bearer ${token}` }

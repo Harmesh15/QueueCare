@@ -1,8 +1,3 @@
-
-const API_BASE = "http://localhost:3000/api";
-const DOCTORS_API = `${API_BASE}/doctors`;
-const CLINICS_API = `${API_BASE}/clinics`;
-
 const token = localStorage.getItem("token");
 
 const addForm = document.getElementById("addDoctorForm");
@@ -98,7 +93,7 @@ function getDoctorId(doctor) {
 }
 
 async function loadClinics() {
-    const data = await apiRequest(CLINICS_API, {
+    const data = await apiRequest(`${API_BASE}/clinics`, {
         method: "GET"
     });
 
@@ -130,7 +125,7 @@ async function loadDoctors() {
     doctorsGrid.innerHTML = "<p>Loading doctors...</p>";
 
     try {
-        const data = await apiRequest(DOCTORS_API, {
+        const data = await apiRequest(`${API_BASE}/doctors`, {
             method: "GET"
         });
 
@@ -276,7 +271,7 @@ addForm.addEventListener("submit", async event => {
     button.textContent = "Creating...";
 
     try {
-        const data = await apiRequest(DOCTORS_API, {
+        const data = await apiRequest(`${API_BASE}/doctors`, {
             method: "POST",
             body: JSON.stringify(payload)
         });
@@ -315,10 +310,6 @@ function openEditModal(doctor) {
     document.getElementById("editAvailability").value =
         String(doctor.isAvailable !== false);
 
-    // Working hours need to be loaded from DoctorAvailability API.
-    // document.getElementById("editStartTime").value = "";
-    // document.getElementById("editEndTime").value = "";
-
     editModal.showModal();
 }
 
@@ -355,7 +346,7 @@ editForm.addEventListener("submit", async event => {
 
     try {
         const data = await apiRequest(
-            `${DOCTORS_API}/${encodeURIComponent(doctorId)}`,
+            `${API_BASE}/doctors/${encodeURIComponent(doctorId)}`,
             {
                 method: "PUT",
                 body: JSON.stringify(payload)
@@ -390,7 +381,7 @@ async function deleteDoctor(doctor) {
 
     try {
         const data = await apiRequest(
-            `${DOCTORS_API}/${encodeURIComponent(getDoctorId(doctor))}`,
+            `${API_BASE}/doctors/${encodeURIComponent(getDoctorId(doctor))}`,
             { method: "DELETE" }
         );
 

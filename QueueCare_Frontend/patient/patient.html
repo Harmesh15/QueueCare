@@ -51,6 +51,7 @@
         </section>
     </main>
 
+    <script src="../config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         // Change "token" if your login code uses a different localStorage key.
@@ -62,7 +63,7 @@
 
         document.getElementById("logoutBtn").addEventListener("click", () => {
             localStorage.removeItem("token");
-            window.location.href = "login.html";
+            window.location.href = "../login/login.html";
         });
     </script>
 </body>

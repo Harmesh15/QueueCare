@@ -1,15 +1,3 @@
-
-const API = "http://localhost:3000/api/appointments";
-// const DOCTOR_APPOINTMENTS_URL =
-//     "http://localhost:3000/api/appointments/doctor/my-appointments";
-
-// IMPORTANT: In URLs ko apne actual backend routes se match karna.
-const DOCTOR_APPOINTMENTS_URL = `${API}/doctor/my-appointments`;
-const CALL_NEXT_URL = `${API}/call-next`;
-
-// Assumed route: PATCH /api/appointments/:id/status
-// Body: { status: "completed" } or { status: "cancelled" }
-
 const appointmentsContainer =
     document.getElementById("appointmentsContainer");
 
@@ -28,7 +16,7 @@ let socket = null;
 let isCallingNext = false;
 
 if (!token) {
-    window.location.href = "/login.html";
+    window.location.href = "../login/login.html";
 }
 
 function authConfig() {
@@ -340,7 +328,7 @@ async function loadAppointments() {
 
     try {
         const response = await axios.get(
-            DOCTOR_APPOINTMENTS_URL,
+            `${API_BASE}/appointments/doctor/my-appointments`,
             authConfig()
         );
 
@@ -381,7 +369,7 @@ async function updateAppointmentStatus(id, status) {
 
     try {
         const response = await axios.patch(
-            `${API}/${id}/status`,
+            `${API_BASE}/appointments/${id}/status`,
             { status },
             authConfig()
         );
@@ -417,7 +405,7 @@ callNextBtn.addEventListener("click", async () => {
 
     try {
         const response = await axios.patch(
-            CALL_NEXT_URL,
+            `${API_BASE}/appointments/call-next`,
             {},
             authConfig()
         );
@@ -457,7 +445,7 @@ function connectQueueSocket() {
         return;
     }
 
-    socket = io("http://localhost:3000", {
+    socket = io({
         auth: {
             token: localStorage.getItem("token")
         }
@@ -483,7 +471,7 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
     if (socket) socket.disconnect();
 
     localStorage.removeItem("token");
-    window.location.href = "/login.html";
+    window.location.href = "../login/login.html";
 });
 
 loadAppointments();

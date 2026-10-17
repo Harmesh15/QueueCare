@@ -1,7 +1,3 @@
-const API = "http://localhost:3000/api/appointments";
-const deletePath = "http://localhost:3000/api/appointments/delete";
-// const deletePath = "http://localhost:3000/api/appointments";
-const path = "http://localhost:3000/api/appointments/adminRoute";
 const token = localStorage.getItem("token");
 
 let appointments = [];
@@ -78,7 +74,7 @@ async function getAppointments() {
         message.classList.add("hidden");
 
 
-        const res = await axios.get(path, 
+        const res = await axios.get(`${API_BASE}/appointments/adminRoute`, 
                         {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -257,7 +253,7 @@ async function deleteAppointment(id) {
     }
 
     try {
-        const res = await axios.delete(`${deletePath}/${id}`, {
+        const res = await axios.delete(`${API_BASE}/appointments/delete/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

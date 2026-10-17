@@ -23,7 +23,7 @@ async function bookAppointment() {
     };
 
     try {
-        const response = await fetch("/api/appointments", {
+        const response = await fetch(`${API_BASE}/appointments`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -83,7 +83,7 @@ async function getMyAppointments() {
     }
 
     try {
-        const response = await fetch("/api/appointments", {
+        const response = await fetch(`${API_BASE}/appointments`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -109,7 +109,7 @@ async function getMyAppointments() {
         if (data.appointments.length === 0) {
 
 
-                            const actionCell = document.createElement("td");
+         const actionCell = document.createElement("td");
 
                 if (!["completed", "cancelled", "skipped"].includes(appointment.status)) {
                     const cancelButton = document.createElement("button");
@@ -193,7 +193,7 @@ async function cancelAppointment(appointmentId) {
 
     try {
         const response = await fetch(
-            `/api/appointments/${encodeURIComponent(appointmentId)}`,
+            `${API_BASE}/appointments/${encodeURIComponent(appointmentId)}`,
             {
                 method: "PATCH",
                 headers: {
@@ -260,7 +260,7 @@ async function getAvailableSlots() {
         });
 
         const response = await fetch(
-            `/api/appointments/available-slots?${queryParams.toString()}`,
+            `${API_BASE}/appointments/available-slots?${queryParams.toString()}`,
             {
                 method: "GET",
                 headers: {
@@ -350,17 +350,6 @@ async function getAvailableSlots() {
 }
 
 
-
-// Inse patient ko alag se button click karke slots search karne ki zarurat nahi padegi. , check then uncomment it
-// const doctorSelect = document.getElementById("doctorId");
-// const dateInput = document.getElementById("appointmentDate");
-
-// doctorSelect.addEventListener("change", getAvailableSlots);
-// dateInput.addEventListener("change", getAvailableSlots);
-
-
-
-
 async function callNextPatient() {
     const token = localStorage.getItem("token");
 
@@ -378,7 +367,7 @@ async function callNextPatient() {
     }
 
     try {
-        const response = await fetch("/api/queue/call-next", {
+        const response = await fetch(`${API_BASE}/queue/call-next`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`,

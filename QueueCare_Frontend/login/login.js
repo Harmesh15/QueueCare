@@ -75,7 +75,7 @@ async function loginUser() {
 
     try {
         const response = await axios.post(
-            "http://localhost:3000/api/auth/login",
+            `${API_BASE}/auth/login`,
             { email, password }
         );
 

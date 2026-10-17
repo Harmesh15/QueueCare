@@ -37,7 +37,7 @@ doctorForm.addEventListener("submit", async (event) => {
     };
 
     try {
-        const response = await fetch("/api/doctors", {
+        const response = await fetch(`${API_BASE}/doctors`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -83,7 +83,7 @@ async function getAllDoctors() {
     }
 
     try {
-        const response = await fetch("/api/doctors", {
+        const response = await fetch(`${API_BASE}/doctors`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -155,7 +155,7 @@ async function getDoctorById(doctorId) {
 
     try {
         const response = await fetch(
-            `/api/doctors/${encodeURIComponent(doctorId)}`,
+            `${API_BASE}/doctors/${encodeURIComponent(doctorId)}`,
             {
                 method: "GET",
                 headers: {
@@ -203,7 +203,7 @@ async function updateDoctor(doctorId, doctorData) {
 
     try {
         const response = await fetch(
-            `/api/doctors/${encodeURIComponent(doctorId)}`,
+            `${API_BASE}/doctors/${encodeURIComponent(doctorId)}`,
             {
                 method: "PUT",
                 headers: {
@@ -263,7 +263,7 @@ async function deleteDoctor(doctorId) {
 
     try {
         const response = await fetch(
-            `/api/doctors/${encodeURIComponent(doctorId)}`,
+            `${API_BASE}/doctors/${encodeURIComponent(doctorId)}`,
             {
                 method: "DELETE",
                 headers: {
@@ -356,7 +356,7 @@ async function setWeeklyAvailability() {
     }
 
     try {
-        const response = await fetch("/api/availability/weekly", {
+        const response = await fetch(`${API_BASE}/availability/weekly`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -410,7 +410,7 @@ async function getWeeklyAvailability() {
 
     try {
         const response = await fetch(
-            `/api/availability/weekly/${encodeURIComponent(doctorId)}`,
+            `${API_BASE}/availability/weekly/${encodeURIComponent(doctorId)}`,
             {
                 method: "GET",
                 headers: {
@@ -534,7 +534,7 @@ async function createClinic() {
     };
 
     try {
-        const response = await fetch("/api/clinics", {
+        const response = await fetch(`${API_BASE}/clinics`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -596,7 +596,7 @@ async function getAllClinics() {
     }
 
     try {
-        const response = await fetch("/api/clinics", {
+        const response = await fetch(`${API_BASE}/clinics`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -684,7 +684,7 @@ async function getClinicById(clinicId) {
 
     try {
         const response = await fetch(
-            `/api/clinics/${encodeURIComponent(clinicId)}`,
+            `${API_BASE}/clinics/${encodeURIComponent(clinicId)}`,
             {
                 method: "GET",
                 headers: {
@@ -715,7 +715,7 @@ async function getClinicById(clinicId) {
 
 
 
-const clinic = await getClinicById("YOUR_CLINIC_ID");
+const clinic = await getClinicById("YOUR_CLINIC_ID"); 
 
 if (clinic) {
     console.log(clinic.name);
@@ -741,7 +741,7 @@ async function updateClinic(clinicId, clinicData) {
 
     try {
         const response = await fetch(
-            `/api/clinics/${encodeURIComponent(clinicId)}`,
+            `${API_BASE}/clinics/${encodeURIComponent(clinicId)}`,
             {
                 method: "PUT",
                 headers: {
@@ -800,7 +800,7 @@ async function deleteClinic(clinicId) {
 
     try {
         const response = await fetch(
-            `/api/clinics/${encodeURIComponent(clinicId)}`,
+            `${API_BASE}/clinics/${encodeURIComponent(clinicId)}`,
             {
                 method: "DELETE",
                 headers: {
